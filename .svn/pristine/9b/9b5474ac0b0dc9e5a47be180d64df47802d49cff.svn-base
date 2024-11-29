@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.future.my.board.dao.IBoardDAO">
+   <!-- 전체 건수 조회 -->
+
+   <select id="getTotalRowCount" resultType="int" parameterType="BoardSearchVO">
+      SELECT count(*)
+      FROM boards
+      WHERE USE_YN = 'Y'
+      <include refid="BoardSearch"></include>
+   </select>
+
+<!-- 게시글 조회 검색조건 추가 -->
+	<select id="getBoardSearch" parameterType="BoardSearchVO" resultType="BoardVO">
+SELECT *
+FROM (
+    SELECT rownum AS rnum, a.*
+    FROM (
+        SELECT BOARD_NO,
+               BOARD_TITLE,
+               BOARD_CONTENT,
+               MEM_ID,
+               MEM_CORP,
+               TO_CHAR(CREATE_DT, 'MM/DD HH24:MI:SS') AS CREATE_DT, -- 월일시분 형태로 출력
+               UPDATE_DT,
+               VIEW_COUNT,
+               USE_YN
+        FROM (
+            SELECT a.BOARD_NO,
+                   a.BOARD_TITLE,
+                   a.BOARD_CONTENT,
+                   a.MEM_ID,
+                   b.MEM_CORP,
+                   a.UPDATE_DT,
+                   a.CREATE_DT,
+                   a.VIEW_COUNT,
+                   A.USE_YN
+            FROM BOARDS a
+            JOIN member b
+            ON a.MEM_ID = b.MEM_ID
+        )
+        WHERE USE_YN = 'Y'
+        <include refid="BoardSearch"></include>
+        ORDER BY create_dt desc
+    ) a  
+)
+WHERE rnum BETWEEN #{firstRow} AND #{lastRow}
+	</select>
+
+
+	<sql id="BoardSearch">
+		<if
+			test="@org.apache.commons.lang3.StringUtils@isNotBlank(searchWord)">
+			<!-- searchWord가 null이 아니고 빈 문자열이 아닐 경우 -->
+			<choose>
+				<when test='searchType=="T"'>
+					AND board_title LIKE '%'|| #{searchWord} ||'%'				
+				</when>
+				<when test='searchType=="W"'>
+					AND mem_id LIKE '%'|| #{searchWord} ||'%'	 						
+				</when>
+				<when test='searchType=="C"'>
+					AND board_content LIKE '%'|| #{searchWord} ||'%'				
+				</when>
+				<!-- 회사 검색 오류남  
+				<when test='searchType=="J"'>
+					AND mem_corp LIKE '%'|| #{searchWord} ||'%'				
+				</when>
+				 -->
+			</choose>
+		</if>
+
+		<!-- searchCategory가 null이 아니고 빈 문자열이 아닐 경우 -->
+	</sql>
+
+
+   <!-- 게시글 상세 조회 -->
+	<select id="getBoard" parameterType="int"
+		resultType="com.future.my.board.vo.BoardVO">
+		 SELECT
+		a.BOARD_NO,
+		a.BOARD_TITLE,
+		a.BOARD_CONTENT,
+		a.MEM_ID,
+        b.MEM_CORP,
+		a.BOARDIMAGE,
+		a.USE_YN,
+		a.UPDATE_DT,
+		TO_CHAR(CREATE_DT, 'MM/DD HH24:MI:SS') AS CREATE_DT, -- 월일시분 형태로 출력
+		a.view_count
+		FROM BOARDS a
+        JOIN  member b
+        ON a.MEM_ID = b.MEM_ID
+		WHERE BOARD_NO = #{boardNo}
+	</select>
+
+   <!-- 게시글 작성 -->
+   <insert id="writeBoard"
+      parameterType="com.future.my.board.vo.BoardVO">
+      INSERT INTO BOARDS (
+      BOARD_NO,
+      BOARD_TITLE,
+      BOARD_CONTENT,
+      MEM_ID,
+      BOARDIMAGE,
+      USE_YN,
+      UPDATE_DT,
+      CREATE_DT
+      )
+      VALUES (
+       BOARD_SEQ.NEXTVAL,
+      #{boardTitle},
+      #{boardContent},
+      #{memId},
+      COALESCE(#{boardImage}, ''), <!-- 
+         null 값 처리 -->
+      'Y',
+      SYSDATE,
+      SYSDATE
+      )
+   </insert>
+
+   <!-- 게시글 수정 -->
+   <update id="updateBoard"
+      parameterType="com.future.my.board.vo.BoardVO">
+      UPDATE BOARDS  <!-- 테이블 이름 변경 -->
+      SET
+      BOARD_TITLE = #{boardTitle},
+      BOARD_CONTENT = #{boardContent},
+      BOARDIMAGE = COALESCE(#{boardImage}, ''), <!-- 이미지가 없으면 빈 문자열로 처리 -->
+      UPDATE_DT = SYSDATE
+      WHERE
+      BOARD_NO = #{boardNo}
+   </update>
+
+   <!-- 게시글 삭제 -->
+   <update id="deleteBoard" parameterType="int">
+      UPDATE BOARDS  <!-- 테이블 이름 변경 -->
+      SET
+      USE_YN = 'N',
+      UPDATE_DT = SYSDATE
+      WHERE
+      BOARD_NO = #{boardNo}
+   </update>
+   
+   <!-- 게시판 조회수 -->
+   <update id="updateViewCount" parameterType="int">
+      UPDATE BOARDS
+      SET VIEW_COUNT = VIEW_COUNT + 1
+      WHERE BOARD_NO = #{boardNo}
+   </update>
+
+   <!-- 댓글 리스트 조회 -->
+   <select id="getReplyList" parameterType="int" resultType="com.future.my.board.vo.ReplyVO">
+      SELECT a.reply_no
+            ,a.board_no
+            ,a.mem_id
+            ,a.reply_content
+            ,TO_CHAR(a.reply_date, 'MM/DD HH24:MI') as reply_date
+      FROM replys a, boards b
+      WHERE a.board_no = b.board_no 
+      AND   a.use_yn = 'Y'
+        AND a.board_no = #{boardNo}
+        ORDER BY reply_date DESC
+   </select>
+
+
+
+
+   <!-- 댓글 조회 -->
+   <select id="getReply" parameterType="String"
+      resultType="com.future.my.board.vo.ReplyVO">
+      SELECT REPLY_NO,
+            REPLY_CONTENT,
+            MEM_ID,
+            TO_CHAR(reply_date, 'MM/DD HH24:MI') as reply_date
+      FROM REPLYS
+      WHERE REPLY_NO = #{replyNo}
+   </select>
+
+   <!-- 댓글 작성 -->
+   <insert id="writeReply"
+      parameterType="com.future.my.board.vo.ReplyVO">
+      INSERT INTO REPLYS (
+      REPLY_NO,
+      REPLY_CONTENT,
+      MEM_ID,
+      BOARD_NO,
+      REPLY_DATE
+      )
+      VALUES (
+      #{replyNo},
+      #{replyContent},
+      #{memId},
+      #{boardNo},
+      SYSDATE
+
+      )
+   </insert>
+
+   <!-- 댓글 삭제 -->
+   <delete id="delReply" parameterType="String">
+      DELETE FROM REPLYS
+      WHERE REPLY_NO = #{replyNo}
+   </delete>
+
+   
+
+</mapper>

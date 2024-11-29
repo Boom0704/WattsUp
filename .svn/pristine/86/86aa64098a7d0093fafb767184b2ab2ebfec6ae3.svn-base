@@ -1,0 +1,218 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>home</title>
+	<style>
+		/* 전체 페이지 배경을 어두운 색으로 설정 */
+		body {
+		    background-color: #c0c0c1; /* 어두운 배경색 */
+		    color: white; /* 글자 색을 흰색으로 변경 */
+		    margin: 0;
+		    font-family: Arial, sans-serif;
+		}
+		
+		.menu-container {
+		    display: flex;
+		    flex-direction: column; /* 세로 방향 배치 */
+		    gap: 15vh; /* 아이템 간 간격 */
+		}
+		
+		.menu-item {
+		    display: flex;
+		    align-items: center; /* 수직 정렬 */
+		    height: 400px; /* 세로 최소 높이 */
+		    width: 100%; /* 전체 폭 차지 */
+		    border-radius: 15px;
+		    border: none; /* 기본 테두리는 제거 */
+		    border-bottom: 1px solid black; /* 아래쪽 테두리 */
+		    border-right: 1px solid black; /* 오른쪽 테두리 */
+		    overflow: hidden;
+		    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+		    transition: transform 0.3s ease, box-shadow 0.3s ease;
+		    background-color: #fff;
+		    padding: 16px;
+		}
+		
+		.menu-item img {
+		    width: 50%; /* 가로 크기 */
+		    height: 100%; /* 세로를 채우기 */
+		    object-fit: contain; /* 이미지 비율 유지 */
+		    border-radius: 15px; /* 둥근 모서리 */
+		}
+		
+		.menu-item.left img {
+		    order: 1; /* 이미지가 왼쪽 */
+		}
+		
+		.menu-item.left .menu-text {
+		    order: 2; /* 텍스트가 오른쪽 */
+		    padding-left: 15px; /* 텍스트와 이미지 간 간격 */
+		}
+		
+		.menu-item.right img {
+		    order: 2; /* 이미지가 오른쪽 */
+		}
+		
+		.menu-item.right .menu-text {
+		    order: 1; /* 텍스트가 왼쪽 */
+		    padding-right: 15px; /* 텍스트와 이미지 간 간격 */
+		}
+		
+		.menu-text {
+		    width: 50%;
+		    font-size: 16px;
+		    color: #333;
+		    text-align: center; /* 텍스트 가운데 정렬 */
+		}
+		
+		.menu-item:hover {
+		    transform: translateY(-10px);
+		    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+		}
+
+		/* 서비스 섹션 배경을 어두운 색으로 설정 */
+		.service {
+		    background-color: #e9ecef; /* 서비스 섹션의 배경색을 어두운 색으로 */
+		}
+
+		.menu-text p {
+		    color: black; /* 텍스트 색상 변경 */
+		    font-size: 30px !important; /* 글자 크기 강제 적용 */
+		}
+		
+		.menu-context span {
+		    display: inline-block; /* 개별 글자를 컨트롤하기 위해 inline-block 설정 */
+		    transition: transform 0.1s ease, color 0.1s ease;
+		}
+		
+		.menu-context span.active {
+		    color: red; /* 강조된 글자 색상 */
+		    transform: translateY(-5px) scale(1.4); /* 위로 튀어오르고 크기 확대 */
+		}
+	</style>
+	<script>
+	document.addEventListener("DOMContentLoaded", () => {
+	    const menuItems = document.querySelectorAll(".menu-item");
+
+	    menuItems.forEach((menuItem) => {
+	        const context = menuItem.querySelector(".menu-context");
+	        const text = context.innerText.trim(); // 텍스트 내용
+	        context.innerHTML = ""; // 기존 텍스트 제거
+
+	        // 텍스트를 span으로 분리
+	        text.split("").forEach((char) => {
+	            const span = document.createElement("span");
+	            span.textContent = char;
+	            if (char === " ") {
+	                span.style.marginRight = "5px"; // 공백을 유지
+	            }
+	            context.appendChild(span);
+	        });
+
+	        const spans = context.querySelectorAll("span");
+
+	        let animationTimeouts = []; // 타이머 ID를 저장하는 배열
+	        const speedMultiplier = 1; // 속도 변경을 위한 배율
+
+	        let animationActive = false; // 애니메이션 상태 관리
+
+	        // 애니메이션 실행 함수
+	        const startAnimation = () => {
+	            let index = 0; // 현재 강조 중인 문자 인덱스
+
+	            const animate = () => {
+	                if (!animationActive) return; // 애니메이션이 활성화되지 않으면 중단
+
+	                // 이전 문자 초기화
+	                spans.forEach((span) => span.classList.remove("active"));
+
+	                // 현재 문자 강조
+	                spans[index].classList.add("active");
+
+	                // 다음 인덱스로 이동
+	                index = (index + 1) % spans.length; // 인덱스를 순환하도록 설정
+
+	                // 다음 애니메이션 예약
+	                animationTimeouts.push(setTimeout(animate, 100 * speedMultiplier));
+	            };
+
+	            animate(); // 애니메이션 시작
+	        };
+
+	        // 마우스 진입 시 애니메이션 실행
+	        menuItem.addEventListener("mouseenter", () => {
+	            if (animationActive) return; // 이미 실행 중이면 중복 실행 방지
+	            animationActive = true;
+	            startAnimation();
+	        });
+
+	        // 마우스 이탈 시 애니메이션 초기화 (천천히 종료)
+	        menuItem.addEventListener("mouseleave", () => {
+	            animationActive = false; // 애니메이션 중단
+	            animationTimeouts.forEach((timeout) => clearTimeout(timeout)); // 모든 예약된 타이머 제거
+	            animationTimeouts = []; // 배열 초기화
+
+	            // 모든 문자의 상태를 초기화
+	            spans.forEach((span) => span.classList.remove("active"));
+	        });
+	    });
+	});
+		</script>
+	
+</head>
+<body>
+<jsp:include page="/WEB-INF/inc/top.jsp"></jsp:include>
+
+            <!-- Carousel Start -->
+            <div class="header-carousel owl-carousel">
+                <div class="header-carousel-item">
+                    <img src="img/energy2.jpg" class="img-fluid w-100" alt="Image">
+                </div>
+                <div class="header-carousel-item">
+                    <img src="img/energy3.avif" class="img-fluid w-100" alt="Image">
+                </div>
+            	<div class="header-carousel-item">
+                    <img src="img/e2.jpg" class="img-fluid w-100" alt="Image">
+                </div>
+            </div>
+            <!-- Carousel End -->
+
+        <!-- Navbar & Hero End -->
+
+
+        <!-- Services Start -->
+        <div class="container-fluid service py-5">
+            <div class="container py-5">
+				<div class="menu-container">
+    <a href="/chartView" class="menu-item left">
+        <img src="/img/chart.gif" alt="Image 1">
+        <div class="menu-text">
+            <p class="menu-context">가스, 전기 등 우리가 사용하는 자원을 점검하고 필요에 따라 조정하세요. 작은 실천이 환경 보호로 이어집니다.</p>
+        </div>
+    </a>
+    <a href="/chartCompanyView" class="menu-item right">
+        <img src="/img/chart2.gif" alt="Image 2">
+        <div class="menu-text">
+            <p class="menu-context">기업 간의 원활한 커뮤니케이션을 통해 피드백을 주고받으며 서로 성장하세요. 지속 가능한 협력은 환경과 미래에 긍정적인 영향을 줍니다.</p>
+        </div>
+    </a>
+    <a href="/companyView" class="menu-item left">
+        <img src="/img/2.gif" alt="Image 1">
+        <div class="menu-text">
+            <p class="menu-context">우리가 실천할 수 있는 환경 보호 팁을 함께 나눠보세요. 작은 아이디어가 모여 큰 변화를 만듭니다.</p>
+        </div>
+    </a>
+</div>
+             </div>
+        </div>
+        <!-- Services End -->
+
+	
+<jsp:include page="/WEB-INF/inc/footer.jsp"></jsp:include>
+	
+</body>
+</html>

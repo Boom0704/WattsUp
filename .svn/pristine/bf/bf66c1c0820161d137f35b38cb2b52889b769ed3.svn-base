@@ -1,0 +1,312 @@
+<%
+  /* ================================================================= 
+   * 작성일     : 2024. 11. 18. 
+   * 작성자     : 팽수
+   * 상세설명  : 
+   * 화면ID  :
+   * ================================================================= 
+   * 수정일         작성자             내용      
+   * -----------------------------------------------------------------
+   *
+   * ================================================================= 
+   */
+%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>chart</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+	<script  src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <style>
+        .chart-container {
+            position: relative;
+        }
+        #backToYear {
+            position: absolute;
+            top: 0px;
+            left: 60px;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 100; 
+        }
+        
+        .bg-breadcrumb {
+		    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(../img/e1.jpg);
+		    background-position: center center;
+		    background-repeat: no-repeat;
+		    background-size: cover;
+		    padding: 300px 0 60px 0;
+		}
+		
+		.bg-breadcrumb .breadcrumb-item a {
+		    color: white !important;
+
+    </style>
+</head>
+<body>
+<jsp:include page="/WEB-INF/inc/top.jsp"></jsp:include>
+
+		<!-- 정적 chart -->
+			<script>
+			document.addEventListener('DOMContentLoaded', function () {
+				
+				let corpNam;
+				
+				//Enter로 검색 
+				document.addEventListener('keydown', function(event) {
+					if (event.key === 'Enter'){
+						corpName = $("#corpName").val()
+						if (corpName != null && corpName !== ""){
+							event.preventDefault()
+							$("#corpName").val("")
+							getCorpData(corpName)
+						}
+					}
+				})
+
+				//차트 변경
+				function changeDisplay() {
+					$("#year").toggle();
+					$("#month").toggle();
+					$("#backToYear").toggle();	
+				}
+				
+				//화살표 클릭 시 년도 차트
+			    $("#backToYear").click(function(){
+			    	changeDisplay();
+				})
+				
+				var chartList;
+				var elecList = [];
+				function getCorpData(corp){
+			    	$.ajax({
+			    		url: '/getCorpData',
+			            type: 'POST',
+			            data: {
+			            	corp : corp
+			            }, 
+			            success: function(response) {
+			            	elecList = [];
+			            	for (let i=0; i<response.length; i++){
+			            		elecList.push(response[i]['elecUse']) 
+			            	}
+			            	console.log(elecList)
+			            	yearChart.data.datasets[0].data = elecList; 
+			            	yearChart.update(); 
+			            	$("#month").css("display", "none");
+			            	$("#backToYear").css("display", "none");
+			            	$("#year").css("display", "block");
+			            },
+			            error: function(error) {
+							console.log(error)
+			            }
+			    	});
+			    }
+				
+				
+				// 첫 번째 라인 차트
+			    const month = document.querySelector('#month').getContext('2d');
+			    const monthChart = new Chart(month, {
+			        type: 'line',
+			        data: {
+			            labels: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+			            datasets: [{
+			                label: '월별',
+			                data: [0,0,0,0,0,0,0,0,0,0,0,0],
+			                borderColor: 'rgba(75, 192, 192, 1)',
+			                borderWidth: 2,
+			                fill: false,
+			            }]
+			        },
+			        options: {
+			            responsive: true,
+			            plugins: {
+			                legend: { position: 'top' },
+			                tooltip: { enabled: true },
+			            },
+			            scales: {
+			                x: { beginAtZero: true },
+			                y: { beginAtZero: true }
+			            },
+			            onClick: function(e) {
+			                const activePoints = monthChart.getElementsAtEventForMode(e, 'nearest', {intersect: true}, true);
+			            }
+			        }
+			    });
+			
+			    // 두 번째 라인 차트 (다른 데이터 사용)
+			    const year = document.querySelector('#year').getContext('2d');
+			    const yearChart = new Chart(year, {
+			        type: 'line',
+			        data: {
+			            labels: ['2015년', '2016년', '2017년', '2018년', '2019년', '2020년', '2021년', '2022년'],
+			            datasets: [{
+			                label: '년도별',
+			                data: [0,0,0,0,0,0,0,0],
+			                borderColor: 'rgba(192, 75, 75, 1)',
+			                borderWidth: 2,
+			                fill: false,
+			            }]
+			        },
+			        options: {
+			            responsive: true,
+			            plugins: {
+			                legend: { position: 'top' },
+			                tooltip: { enabled: true },
+			            },
+			            scales: {
+			                x: { beginAtZero: true },
+			                y: { beginAtZero: true }
+			            },
+			            onClick: function(e) {
+			                // 클릭 위치의 좌표를 확인
+			                const canvasPosition = Chart.helpers.getRelativePosition(e, yearChart); // 차트의 상대 좌표
+			                const xScale = yearChart.scales.x; // x축 스케일 정보
+			                const xValue = xScale.getValueForPixel(canvasPosition.x); // 클릭된 위치의 x 값
+
+			                // x축 라벨에 해당하는 값 찾기
+			                const labelIndex = yearChart.data.labels.findIndex((label, index) => {
+			                    // 라벨의 위치와 클릭된 x 좌표가 가까운지 확인
+			                    const labelPosition = xScale.getPixelForValue(index); // x축 라벨의 위치
+			                    const labelWidth = xScale.width / yearChart.data.labels.length; // 라벨 너비
+			                    return Math.abs(labelPosition - canvasPosition.x) < labelWidth / 2; // 클릭한 위치가 라벨 영역 내에 있을 때
+			                });
+
+			                if (labelIndex !== -1) {
+			                    const label = yearChart.data.labels[labelIndex]; // 클릭된 라벨
+			                    getMonth(label.slice(0,4),corpName)
+			                }
+			            }
+			        }
+			    });
+			    function getMonth(year, corp){
+			    	 $.ajax({
+			    	        url: '/getMonth',  
+			    	        type: 'POST',         
+			    	        contentType: "application/json",
+			    	        dataType: "json",
+			    	        data: JSON.stringify({ year: year, corp : corp }), 
+			    	        success: function(response) {
+			    	        	console.log(response.elecList)
+			    	        	monthChart.data.datasets[0].data = response.elecList; 
+								monthChart.update();  
+								changeDisplay();						
+			    	        },
+			    	        error: function(error) {
+			    	            console.error("AJAX 요청 실패:", error);
+			    	        }
+		    	    });			    	
+			    }
+			});
+			</script>
+		<!-- 정적 chart -->
+
+
+
+
+ 		<!-- Header Start -->
+        <div class="container-fluid bg-breadcrumb">
+            <div class="container text-center py-5" style="max-width: 900px;">
+                <h3 class="text-white display-3 mb-4 wow fadeInDown" data-wow-delay="0.1s">Chart Service</h1>
+                <ol class="breadcrumb justify-content-center mb-0 wow fadeInDown" data-wow-delay="0.3s">
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item"><a href="/chartView">About</a></li>
+                    <li class="breadcrumb-item"><a href="/chartCompanyView">Services</a></li>
+                    <li class="breadcrumb-item"><a href="/companyView">Contact</a></li>
+                </ol>    
+            </div>
+        </div>
+        <!-- Header End -->
+
+
+
+
+
+        <!-- Feature Start -->
+        <div class="container-fluid feature pt-5">
+            <div class="container">
+                <div class="section-title mb-5 wow fadeInUp" data-wow-delay="0.1s">
+                    <div class="sub-style">
+                        <h4 class="sub-title px-3 mb-0">chart</h4>
+                    </div>
+                    <h3 class="display-3">지역 선택</h3>
+                    <p class="fs-3">지역을 선택하세요</p>
+					
+                    <form class="row d-flex justify-content-center">
+                        <div class="col-3"> 
+                        	<select class="form-select" aria-label="Default select example">
+                           		<option selected>대전</option>
+                         	</select>
+                        </div>
+                        <div class="col-3"> 
+                        	<select class="form-select" aria-label="Default select example">
+	                            <option selected>구</option>
+	                            <option value="30110">동구</option>
+	                            <option value="30140">중구</option>
+	                            <option value="30170">서구</option>
+	                            <option value="30200">유성구</option>
+	                            <option value="30230">대덕구</option>
+                        	</select>
+                        </div>
+                        <div class="col-3"> 
+                        	<input id="corpName" type="text" class="form-control" placeholder="기업검색">
+                        </div>
+                        
+                    </form>
+                    <form class="row d-flex justify-content-center mt-2">
+                            <div class="col">
+                                <input type="checkbox"> 일별 
+                            </div>
+                            <div class="col">
+                                <input type="checkbox"> 월별 
+                            </div>
+                            <div class="col">
+                                <input type="checkbox"> 일별 
+                            </div>
+                            <div class="col">
+                                <input type="checkbox"> 일별 
+                            </div>
+                            <div class="col">
+                                <input type="checkbox"> 일별 
+                            </div>
+                            <div class="col">
+                                <input type="checkbox"> 일별 
+                            </div>
+                        
+                    </form>
+                   
+                </div>
+            </div>
+        </div>
+        <!-- Feature End -->
+
+          <!-- Feature Start -->
+        <div class="container-fluid feature">
+            <div class="container">
+                <div class="section-title mb-5 wow fadeInUp" data-wow-delay="0.1s">
+                    <div class="row my-2">
+	                    <div class="col chart-container">
+	                    	<div id="backToYear" style="display:none;">&#8592;</div>
+	    	                <canvas id="year" width="900px" height="500px" style="display:none;"></canvas>
+		                    <canvas id="month" width="900px" height="500px" style="display:none;"></canvas>
+	                    </div>
+                    </div>
+
+                    <div class="row my-2">
+                    <div class="col">
+                    <canvas id="year" width="900px" height="500px"></canvas>
+                    </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- Feature End -->
+<jsp:include page="/WEB-INF/inc/footer.jsp"></jsp:include>
+	
+</body>
+</html>

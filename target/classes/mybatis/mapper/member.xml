@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.future.my.member.dao.IMemberDAO">
+
+	<insert id="registMember" parameterType="MemberVO">
+		INSERT INTO member(mem_id, mem_pw, mem_corp)
+		VALUES (#{memId}, #{memPw}, #{memCorp})
+	</insert>
+	
+	<select id="registCheckId" parameterType="String" resultType="int">
+		SELECT COUNT(*)
+		FROM member
+		WHERE mem_id = #{memId}
+	</select>
+	
+	<select id="loginMember" parameterType="MemberVO" resultType="MemberVO">		
+	
+	SELECT m.mem_id,
+         m.mem_pw,
+         m.mem_corp,
+         ds.sub_addr
+    FROM member m
+    JOIN daejeon_sub ds
+      ON m.mem_corp = ds.corp_name
+    WHERE m.use_yn = 'Y'
+      AND m.mem_id = #{memId}
+      AND m.mem_pw = #{memPw}
+      
+	</select>
+	
+	<update id="memberUpdate" parameterType="MemberVO">
+	
+		UPDATE member
+		SET mem_corp=#{memCorp}
+		WHERE mem_id=#{memId}
+		
+	</update>
+	
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+

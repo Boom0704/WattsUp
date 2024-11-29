@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.future.my.company.dao.ICompanyDAO">
+
+    <!-- 전체 회사 정보 조회 -->
+    <select id="selectAllCompanies" resultType="com.future.my.company.vo.CompanyVO">
+        SELECT MAIN_ID, SUB_ADDR, CORP_NAME
+        FROM DAEJEON_SUB
+    </select>
+
+    <!-- 특정 회사 정보 조회 -->
+    <select id="selectCompanyById" parameterType="String" resultType="com.future.my.company.vo.CompanyVO">
+        SELECT MAIN_ID, SUB_ADDR, CORP_NAME
+        FROM DAEJEON_SUB
+        WHERE MAIN_ID = #{mainId}
+    </select>
+    
+   
+</mapper>

@@ -1,0 +1,47 @@
+package com.future.my.log;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.future.my.member.service.MemberService;
+import com.future.my.member.vo.MemberVO;
+
+/**
+ * Class Name  : TipController
+ * Author      : boom
+ * Created Date: 2024. 11. 19.
+ * Version: 1.0
+ * Purpose:   
+ * Description: 
+ */
+@Controller
+public class RegistController {
+	
+	@Autowired
+	MemberService service;
+	
+	//팁뷰로 이동
+	@RequestMapping("/regist")
+	public String logView() {
+		return "log/registView";
+	}
+	
+	@RequestMapping("/registDo")
+	public String registDo(MemberVO vo, Model model) {
+		if(service.registCheckId(vo.getMemId())) {
+			model.addAttribute("error", "중복아이디");
+			return "log/registView";
+			}else {
+	            // 중복이 아닌 경우 회원 가입 처리
+	            try {
+	                service.registMember(vo);
+	            } catch (Exception e) {
+	                model.addAttribute("error", "회원가입 중 오류가 발생했습니다.");
+	                return "log/registView";
+	            }
+	            return "log/loginView"; // 성공 시 로그인 페이지로 이동
+	       }
+	}
+}

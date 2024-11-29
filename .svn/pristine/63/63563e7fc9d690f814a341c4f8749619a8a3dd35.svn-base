@@ -1,0 +1,407 @@
+
+<%
+  /* ================================================================= 
+   * 작성일     : 2024. 11. 18. 
+   * 작성자     : 팽수
+   * 상세설명  : 
+   * 화면ID  :
+   * ================================================================= 
+   * 수정일         작성자             내용      
+   * -----------------------------------------------------------------
+   *
+   * ================================================================= 
+   */
+%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>tip</title>
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+</head>
+<style>
+
+
+.bg-breadcrumb {
+	background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+		url(../img/s4.jpg);
+background-position: center center;
+		    background-repeat: no-repeat;
+		    background-size: cover;
+		    padding: 160px 0 60px 0;
+}
+
+</style>
+<body>
+	<jsp:include page="/WEB-INF/inc/top.jsp"></jsp:include>
+
+
+
+
+<!-- Header Start -->
+       <div class="container-fluid bg-breadcrumb">
+            <div class="container text-center" style="max-width: 900px;">
+                <h3 class="text-white display-3 mb-4 wow fadeInDown" data-wow-delay="0.1s">Tip!</h3>
+
+            </div>
+        </div>
+        <!-- Header End -->
+
+
+	<!-- Feature Start -->
+	<div class="container-fluid feature py-3">
+		<div class="container py-5">
+			<div class="section-title mb-5 wow fadeInUp" data-wow-delay="0.1s">
+				<div class="sub-style">
+					<h4 class="sub-title px-3">하루 1kWh 줄이기</h4>
+				</div>
+			</div>
+
+			<div class="wow fadeInUp" data-wow-delay="0.1s">
+				<div class="container d-flex justify-content-center mb-5">
+					<iframe width="1040" height="510"
+						src="https://www.youtube.com/embed/1Gh97hCQ-zo"
+						title="하루 1kWh 줄이기 | 사무실 편" frameborder="0"
+						allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+						referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+				</div>
+			</div>
+
+			<div class="wow fadeInUp" data-wow-delay="0.1s">
+				<div class="container d-flex justify-content-center ">
+
+					<div class="accordion" id="accordionExample" style="width: 1240px;">
+						<div class="accordion-item">
+							<h2 class="accordion-header">
+								<button class="accordion-button" type="button"
+									data-bs-toggle="collapse" data-bs-target="#collapse1"
+									aria-expanded="true" aria-controls="collapse1">승강기 격층
+									운행하고, 계단 이용하기</button>
+							</h2>
+							<div id="collapse1" class="accordion-collapse collapse show"
+								data-bs-parent="#accordionExample">
+								<div class="accordion-body"
+									style="display: flex; justify-content: center; align-items: center; flex-wrap: wrap; padding-left: 50px; padding: 20px;">
+
+									<div class="col-5 mx-2">
+										<div class="imgText">
+											<img id="accimg" src="img/acc1.jpg" alt="">
+											<div class="px-3" id="text">
+												<p>건물 승강기의 평균 운행 횟수는 1대/일 1,200회 정도이며, 연간 약 41t의 탄소를
+													배출한다.</p>
+											</div>
+										</div>
+									</div>
+
+									<div class="col box" id="actitle2">
+										<strong>실천효과</strong>
+										<div class="p-3 d-flex justify-content-between"
+											style="border-radius: 20px; background-color: aliceblue;">
+											<strong id="colcontent">🌎 우리 기업 이산화탄소 감축량</strong> <span><b>1</b>t</span>
+										</div>
+
+										<strong>실천수칙</strong>
+										<ul class="bul type1 py-3"
+											style="border-radius: 20px; background-color: aliceblue;">
+											<li>승강기 격층 운행하기</li>
+											<li>승강기 대신 계단 이용하기</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+
+
+
+
+						<div class="accordion-item">
+							<h2 class="accordion-header">
+								<button class="accordion-button collapsed" type="button"
+									data-bs-toggle="collapse" data-bs-target="#collapse2"
+									aria-expanded="false" aria-controls="collapse2">불필요한
+									조명기구 소등하기</button>
+							</h2>
+							<div id="collapse2" class="accordion-collapse collapse"
+								data-bs-parent="#accordionExample">
+								<div class="accordion-body"
+									style="display: flex; justify-content: center; align-items: center; flex-wrap: wrap; padding-left: 50px; padding: 20px;">
+
+									<div class="col-5 mx-2">
+										<div class="imgText">
+											<img id="accimg" src="img/acc2.png" alt="">
+											<div class="px-3" id="text">
+												<p>조명기구 한 개의 전기 사용량은 작지만 여러 개의 조명기구를 장시간 사용하기 때문에 전체 전기
+													사용량에서 조명이 차지하는 비중은 높은 편이다.</p>
+											</div>
+										</div>
+									</div>
+
+									<div class="col box" id="actitle2">
+										<strong>실천효과</strong>
+										<div class="p-3 d-flex justify-content-between"
+											style="border-radius: 20px; background-color: aliceblue;">
+											<strong id="colcontent">🌎 우리 기업 이산화탄소 감축량</strong> <span><b>0.05</b>t</span>
+										</div>
+
+										<strong>실천수칙</strong>
+										<ul class="bul type1 py-3"
+											style="border-radius: 20px; background-color: aliceblue;">
+											<li>사용하지 않는 조명기구 소등하기</li>
+											<li>소등행사(4월 22일 지구의 날 등) 참여하기</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+
+
+
+
+						<div class="accordion-item">
+							<h2 class="accordion-header">
+								<button class="accordion-button collapsed" type="button"
+									data-bs-toggle="collapse" data-bs-target="#collapse3"
+									aria-expanded="false" aria-controls="collapse3">전자기기
+									대기전력 차단하기</button>
+							</h2>
+							<div id="collapse3" class="accordion-collapse collapse"
+								data-bs-parent="#accordionExample">
+								<div class="accordion-body"
+									style="display: flex; justify-content: center; align-items: center; flex-wrap: wrap; padding-left: 50px; padding: 20px;">
+
+									<div class="col-5 mx-2">
+										<div class="imgText">
+											<img id="accimg" src="img/acc3.jpg" alt="">
+											<div class="px-3" id="text">
+												<p>대기전력은 기기의 동작과 관계없이 전원을 끈 상태에서도 소비되는 불필요하게 낭비되는 전기를
+													말한다.</p>
+											</div>
+										</div>
+									</div>
+
+									<div class="col box" id="actitle2">
+										<strong>실천효과</strong>
+										<div class="p-3 d-flex justify-content-between"
+											style="border-radius: 20px; background-color: aliceblue;">
+											<strong id="colcontent">🌎 우리 기업 이산화탄소 감축량</strong> <span><b>0.4</b>t</span>
+										</div>
+
+										<strong>실천수칙</strong>
+										<ul class="bul type1 py-3"
+											style="border-radius: 20px; background-color: aliceblue;">
+											<li>대기전력이 높거나, 일시적으로만 사용하는 전자기기 확인하기</li>
+											<li>전자기기 특성과 사용 정도를 고려해 대기전력 차단장치 설치·관리하기</li>
+											<li>점심시간 및 퇴근 시 직원들이 대기전력 차단하는 사내 문화 조성하기</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+
+
+
+						<div class="accordion-item">
+							<h2 class="accordion-header">
+								<button class="accordion-button collapsed" type="button"
+									data-bs-toggle="collapse" data-bs-target="#collapse4"
+									aria-expanded="false" aria-controls="collapse4">컴퓨터
+									절전기능 사용하기</button>
+							</h2>
+							<div id="collapse4" class="accordion-collapse collapse"
+								data-bs-parent="#accordionExample">
+								<div class="accordion-body"
+									style="display: flex; justify-content: center; align-items: center; flex-wrap: wrap; padding-left: 50px; padding: 20px;">
+
+									<div class="col-5 mx-2">
+										<div class="imgText">
+											<img id="accimg" src="img/acc4.jpg" alt="">
+											<div class="px-3" id="text">
+												<p>절전모드는 일정 시간 이상 PC를 쓰지 않을 때 자동으로 본체 및 모니터 전원을 꺼 전력 소비를
+													최소화하는 기능이다.</p>
+											</div>
+										</div>
+									</div>
+
+									<div class="col box" id="actitle2">
+										<strong>실천효과</strong>
+										<div class="p-3 d-flex justify-content-between"
+											style="border-radius: 20px; background-color: aliceblue;">
+											<strong id="colcontent">🌎 우리 기업 이산화탄소 감축량</strong> <span><b>0.6</b>t</span>
+										</div>
+
+										<strong>실천수칙</strong>
+										<ul class="bul type1 py-3"
+											style="border-radius: 20px; background-color: aliceblue;">
+											<li>점심시간 및 회의, 휴식 등으로 자리를 비울 때 컴퓨터 절전기능 사용하기</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+
+
+						<div class="accordion-item">
+							<h2 class="accordion-header">
+								<button class="accordion-button collapsed" type="button"
+									data-bs-toggle="collapse" data-bs-target="#collapse5"
+									aria-expanded="false" aria-controls="collapse5">고효율
+									전자기기 사용하기</button>
+							</h2>
+							<div id="collapse5" class="accordion-collapse collapse"
+								data-bs-parent="#accordionExample">
+								<div class="accordion-body"
+									style="display: flex; justify-content: center; align-items: center; flex-wrap: wrap; padding-left: 50px; padding: 20px;">
+
+									<div class="col-5 mx-2">
+										<div class="imgText">
+											<img id="accimg" src="img/acc5.jpg" alt="">
+											<div class="px-3" id="text">
+												<p>에너지 효율등급이 1등급에 가까운 전자기기일수록 등급이 낮은 제품보다 구매 비용이 높지만,
+													장기적으로 전기요금을 절약하고 탄소 배출을 줄일 수 있다.</p>
+											</div>
+										</div>
+									</div>
+
+									<div class="col box" id="actitle2">
+										<strong>실천효과</strong>
+										<div class="p-3 d-flex justify-content-between"
+											style="border-radius: 20px; background-color: aliceblue;">
+											<strong id="colcontent">🌎 우리 기업 이산화탄소 감축량</strong> <span><b>23</b>t</span>
+										</div>
+
+										<strong>실천수칙</strong>
+										<ul class="bul type1 py-3"
+											style="border-radius: 20px; background-color: aliceblue;">
+											<li>자세한 내용은 한국에너지공단 효율관리제도 누리집(<a
+												href="https://eep.energy.or.kr" target="_blank">https://eep.energy.or.kr</a>)에서
+												확인
+											</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+
+
+						<div class="accordion-item">
+							<h2 class="accordion-header">
+								<button class="accordion-button collapsed" type="button"
+									data-bs-toggle="collapse" data-bs-target="#collapse6"
+									aria-expanded="false" aria-controls="collapse6">절수
+									설비·기기 설치하기</button>
+							</h2>
+							<div id="collapse6" class="accordion-collapse collapse"
+								data-bs-parent="#accordionExample">
+								<div class="accordion-body"
+									style="display: flex; justify-content: center; align-items: center; flex-wrap: wrap; padding-left: 50px; padding: 20px;">
+
+									<div class="col-5 mx-2">
+										<div class="imgText">
+											<img id="accimg" src="img/acc6.jpg" alt="">
+											<div class="px-3" id="text">
+												<p>물을 적게 사용하도록 구조·규격 등의 기준에 맞게 제작된 절수 설비와 기존 설비에 부속품을
+													교체하거나 추가로 장착해 사용하는 절수 기기가 있다.</p>
+											</div>
+										</div>
+									</div>
+
+									<div class="col box" id="actitle2">
+										<strong>실천효과</strong>
+										<div class="p-3 d-flex justify-content-between"
+											style="border-radius: 20px; background-color: aliceblue;">
+											<strong id="colcontent">🌎 우리 기업 이산화탄소 감축량</strong> <span><b>0.3</b>t</span>
+										</div>
+
+										<strong>실천수칙</strong>
+										<ul class="bul type1 py-3"
+											style="border-radius: 20px; background-color: aliceblue;">
+											<li>준비실, 화장실 등의 수전 교체 시 절수 설비(수도꼭지, 변기 등) 설치하기</li>
+											<li>수도꼭지, 양변기에 절수 기기 장착하기</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+
+
+						<div class="accordion-item">
+							<h2 class="accordion-header">
+								<button class="accordion-button collapsed" type="button"
+									data-bs-toggle="collapse" data-bs-target="#collapse7"
+									aria-expanded="false" aria-controls="collapse7">난방온도
+									2'C 낮추고, 냉방온도 2'C 높이기</button>
+							</h2>
+							<div id="collapse7" class="accordion-collapse collapse"
+								data-bs-parent="#accordionExample">
+								<div class="accordion-body"
+									style="display: flex; justify-content: center; align-items: center; flex-wrap: wrap; padding-left: 50px; padding: 20px;">
+
+									<div class="col-5 mx-2">
+										<div class="imgText">
+											<img id="accimg" src="img/acc7.jpg" alt="">
+											<div class="px-3" id="text">
+												<p>적정 실내온도에 맞춰 냉·난방기를 효율적으로 가동하면 전기 사용량을 줄이고, 쾌적한 실내환경을
+													유지할 수 있다</p>
+											</div>
+										</div>
+									</div>
+
+									<div class="col box" id="actitle2">
+										<strong>실천효과</strong>
+										<div class="p-3 d-flex justify-content-between"
+											style="border-radius: 20px; background-color: aliceblue;">
+											<strong id="colcontent">🌎 우리 기업 이산화탄소 감축량</strong> <span><b>0.6</b>t</span>
+										</div>
+
+										<strong>실천수칙</strong>
+										<ul class="bul type1 py-3"
+											style="border-radius: 20px; background-color: aliceblue;">
+											<li>적정 실내온도를 고려해 냉·난방기 설정온도 조절하기</li>
+											<li>실내온도를 확인할 수 있도록 온도계를 눈에 띄는 곳에 설치하기</li>
+											<li>난방
+												<ul class="bul type2">
+													<li>따뜻한 옷차림(기모, 이중직 원단 등의 소재) 하기</li>
+													<li>내복·수면양말·무릎담요와 같은 보온용품 적극 활용하기</li>
+												</ul>
+											</li>
+											<li>냉방
+												<ul class="bul type2">
+													<li>시원한 옷차림(흡습, 속건, 통기성, 냉감 등의 소재)하기</li>
+													<li>에어컨은 선풍기와 함께 사용하기(단, 풍향을 동일하게 해야 함)</li>
+													<li>커튼 등으로 집 안에 들어오는 햇볕 차단하기</li>
+												</ul>
+											</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+
+
+
+
+
+
+
+					</div>
+				</div>
+
+				<div class="wow fadeInUp" data-wow-delay="0.2s">
+					<div class="container d-flex justify-content-center ">
+						<p>이히히이히</p>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<!-- Feature End -->
+
+	<jsp:include page="/WEB-INF/inc/footer.jsp"></jsp:include>
+
+</body>
+</html>

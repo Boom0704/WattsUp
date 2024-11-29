@@ -1,0 +1,33 @@
+package com.future.my.free.vo;
+
+import lombok.Data;
+
+/**
+ * Class Name  : FreeBoardVO
+ * Author      : LeeApGil
+ * Created Date: 2024. 11. 18.
+ * Version: 1.0
+ * Purpose:   
+ * Description: 
+ */
+@Data
+public class FreeBoardVO {
+	
+	private int boNo;                    
+	private String boTitle;              
+	private String boCategory;           
+	private String boWriter;             
+	private String boPass;               
+	private String boContent;            
+	private String boIp;                 
+	private int boHit;                   
+	private String boRegDate;            
+	private String boModDate;            
+	private String boDelYn;              
+	
+	private String boCategoryNm;            
+
+
+
+	
+}

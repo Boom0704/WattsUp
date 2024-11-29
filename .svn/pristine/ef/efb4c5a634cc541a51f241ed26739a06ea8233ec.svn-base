@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.future.my.chart.dao.IChartDAO">
+	
+	<select id="getChartList" parameterType="ChartVO" resultType="ChartVO" >
+		SELECT a.main_id
+		     , b.corp_name
+		     , a.use_year
+		     , SUM(a.elec_use) as elec_use
+		     , SUM(a.gas_use) as gas_use
+		     , SUM(a.total_use) as total_use
+		FROM daejeon_energy a, daejeon_sub b
+		WHERE a.main_id = b.main_id
+		AND b.corp_name LIKE '%아이엘산업%'
+		GROUP BY a.main_id, b.corp_name, a.use_year
+		ORDER BY use_year
+	</select>
+
+	<select id="getMonthChart" parameterType="int" resultType="ChartVO" >
+		SELECT a.main_id
+		     , b.corp_name
+		     , a.use_month
+		     , a.elec_use
+		     , a.gas_use
+		     , a.total_use
+		FROM daejeon_energy a, daejeon_sub b
+		WHERE a.main_id = b.main_id
+		AND b.corp_name LIKE '%아이엘산업%'
+		AND a.use_year = #{year}
+		ORDER BY TO_NUMBER(use_month)
+	</select>
+
+    <select id="getChartById" parameterType="int" resultType="com.future.my.chart.vo.ChartVO">
+        SELECT
+            id, name, description
+        FROM FREE_BOARD
+        WHERE id = #{chartId}
+    </select>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+

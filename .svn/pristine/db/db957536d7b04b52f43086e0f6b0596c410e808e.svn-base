@@ -1,0 +1,41 @@
+package com.future.my.member.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.future.my.member.dao.IMemberDAO;
+import com.future.my.member.vo.MemberVO;
+
+@Service
+public class MemberService {
+
+	@Autowired
+	IMemberDAO dao;
+	//회원가입
+	public void registMember(MemberVO vo) throws Exception {
+		
+		int result = dao.registMember(vo);
+		if(result == 0) {
+			throw new Exception();
+		}
+	}
+	//회원가입 아이디 중복 체크
+	public boolean registCheckId(String memId) {
+		return dao.registCheckId(memId) > 0;
+	}
+	//로그인
+	public MemberVO loginMember(String memId, String memPw) {
+        MemberVO vo = new MemberVO();
+        vo.setMemId(memId);
+        vo.setMemPw(memPw);
+        return dao.loginMember(vo);
+    }
+	
+	public void memberUpdate(MemberVO update) throws Exception {
+		int result = dao.memberUpdate(update);
+		if( result == 0) {
+			throw new Exception();
+		}
+	}
+}
+

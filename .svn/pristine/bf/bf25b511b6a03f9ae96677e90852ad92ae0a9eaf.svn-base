@@ -1,0 +1,38 @@
+package com.future.my.chart.web;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.future.my.chart.service.ChartService;
+import com.future.my.free.vo.FreeBoardVO;
+
+/**
+ * Class Name  : ChartController
+ * Author      : boom
+ * Created Date: 2024. 11. 19.
+ * Version: 1.0
+ * Purpose:   
+ * Description: 
+ */
+@Controller
+public class ChartController {
+	
+	@Autowired
+	ChartService chartService;
+	
+	//차트 뷰로 이동
+	@RequestMapping("/chartView")
+	public String chartView() {
+		return "chart/chartView";
+	}
+	
+	//차트 회사 뷰로 이동
+	@RequestMapping("/chartCompanyView")
+	public String chartCompanyView() {
+		return "chart/chartCompanyView";
+	}
+}

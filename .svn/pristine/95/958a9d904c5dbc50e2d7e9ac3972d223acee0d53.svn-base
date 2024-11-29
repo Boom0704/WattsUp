@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.future.my.free.dao.IFreeBoardDAO">
+	
+	<select id="getBoardList" resultType="FreeBoardVO" >
+			SELECT      
+		       bo_no 
+		      , bo_title 
+		      , bo_category
+			  , bo_writer 
+			  , bo_pass 
+			  , bo_content
+		      , bo_ip 
+		      , bo_hit 
+		      , bo_del_yn
+		FROM FREE_BOARD a
+		ORDER by bo_no desc
+	</select>
+
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+

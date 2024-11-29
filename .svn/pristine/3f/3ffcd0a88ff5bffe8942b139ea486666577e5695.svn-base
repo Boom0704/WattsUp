@@ -1,0 +1,22 @@
+package com.future.my.company.web;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+/**
+ * Class Name  : CompanyConyroller
+ * Author      : boom
+ * Created Date: 2024. 11. 19.
+ * Version: 1.0
+ * Purpose:   
+ * Description: 
+ */
+@Controller
+public class CompanyConyroller {
+
+	//회사 뷰
+	@RequestMapping("/companyView")
+	public String companyView() {
+		return "chart/companyView";
+	}
+}
